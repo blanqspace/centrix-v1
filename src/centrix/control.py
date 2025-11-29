@@ -58,12 +58,31 @@ def set_restart_needed(enabled: bool) -> None:
     set_flag("restart_needed", "true" if enabled else "false")
 
 
+def get_engine_state(default: str = "stopped") -> str:
+    """Return the current engine state or a default if missing."""
+    return get_flag("engine_state", default=default) or default
+
+
+def set_engine_state(state: str) -> None:
+    """Set the current engine state, optionally validating known states."""
+    allowed_states = {"stopped", "starting", "running", "stopping", "degraded"}
+    if state not in allowed_states:
+        raise ValueError(f"Invalid engine state: {state}")
+    set_flag("engine_state", state)
+
+
 if __name__ == "__main__":
     init_schema()
     set_safe_mode(True)
     print(get_safe_mode())
     set_restart_needed(True)
     print(get_restart_needed())
+    set_engine_state("starting")
+    print(get_engine_state())
+    set_engine_state("running")
+    print(get_engine_state())
+    set_engine_state("stopped")
+    print(get_engine_state())
     set_safe_mode(False)
     print(get_safe_mode())
     set_restart_needed(False)
