@@ -1,0 +1,16 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+title Centrix v1 – System Overview
+
+[IBKR Gateway]
+[Centrix Core]
+[Database]
+[Slack Control]
+[Slack Notify]
+
+Centrix Core --> Database
+Slack Control --> Centrix Core
+Slack Notify <-- Centrix Core
+Centrix Core --> IBKR Gateway
+@enduml
