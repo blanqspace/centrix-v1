@@ -23,6 +23,19 @@ def get_config(key: str, scope: str = "global", default: Optional[str] = None) -
         return row["value"]
 
 
+def get_config_float(
+    key: str, scope: str = "global", default: Optional[float] = None
+) -> Optional[float]:
+    """Return a config value converted to float or the provided default on failure/missing."""
+    raw = get_config(key, scope=scope)
+    if raw is None:
+        return default
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return default
+
+
 def set_config(
     key: str,
     value: str,

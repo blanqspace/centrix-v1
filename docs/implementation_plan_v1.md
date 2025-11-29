@@ -25,6 +25,10 @@
   - Nach dem Lauf: `get_latest_heartbeat("engine")` liefert einen aktuellen Eintrag; `get_engine_state()` liefert `stopped`
 
 ## Phase 3 – Risk-Layer (max_daily_loss, max_order_size)
+- Limits liegen in `config_settings` (`risk.max_daily_loss`, `risk.max_order_size`)
+- Risk-Modul prüft Dummy-Orders gegen `max_order_size`; bei Verstoß wird `safe_mode` gesetzt
+- CLI-Demo `run-risk-demo` und Status `show-safe-mode` vorhanden
+- Dateien: `src/centrix/risk.py`, `src/centrix/main.py`, optional `src/centrix/config_service.py`
 
 ## Phase 4 – Slack & IBKR-Status
 

@@ -10,10 +10,13 @@ title Centrix v1 – System Overview (Phase 2 – Engine Loop & Heartbeats)
 
 rectangle "Centrix Core" as Core {
   [Engine Loop]
+  [Risk Service]
 }
 
 Core --> Database
 Slack Control --> Core
 Slack Notify <-- Core
 Core --> IBKR Gateway
+Engine Loop --> Risk Service
+Risk Service --> Database
 @enduml
