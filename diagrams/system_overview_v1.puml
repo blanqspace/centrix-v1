@@ -11,6 +11,7 @@ title Centrix v1 – System Overview (Phase 2 – Engine Loop & Heartbeats)
 rectangle "Centrix Core" as Core {
   [Engine Loop]
   [Risk Service]
+  [IB Client]
 }
 
 Core --> Database
@@ -19,4 +20,11 @@ Slack Notify <-- Core
 Core --> IBKR Gateway
 Engine Loop --> Risk Service
 Risk Service --> Database
+IB Client --> IBKR Gateway
+Engine Loop --> IB Client
+
+note bottom of IB Client
+Phase 4: Connection/Status only
+no orders
+end note
 @enduml

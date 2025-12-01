@@ -31,5 +31,18 @@
 - Dateien: `src/centrix/risk.py`, `src/centrix/main.py`, optional `src/centrix/config_service.py`
 
 ## Phase 4 – Slack & IBKR-Status
+## Phase 4 – IBKR-Gateway-Client & Status
+- Ziele:
+  - Technischer IBKR-Client (connect/disconnect/status) ohne Orders/Strategien
+  - Robuster Verbindungstest (keine Programmabbrüche), Status als Heartbeat (`source="gateway"`)
+  - CLI-Kommandos: `test-ib-connection`, `show-gateway-status`
+- Dateien:
+  - `src/centrix/ib_client.py`
+  - `src/centrix/heartbeat.py` (Nutzung mit `source="gateway"`)
+  - `src/centrix/main.py` (CLI-Integration)
+- Erwartete Ergebnisse:
+  - Erfolgreicher Verbindungsversuch schreibt Heartbeat-Status „connected“
+  - Fehlgeschlagener Versuch schreibt Heartbeat-Status „disconnected"
+  - `show-gateway-status` zeigt den letzten bekannten Gateway-Zustand (Status + Zeit)
 
 ## Phase 5 – Paper-Trading (Strategien + Orders)

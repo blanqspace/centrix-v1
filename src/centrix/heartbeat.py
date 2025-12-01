@@ -12,7 +12,7 @@ from centrix.db import get_connection, init_schema
 
 
 def write_heartbeat(source: str, status: str = "ok") -> None:
-    """Insert a heartbeat entry for the given source with current timestamp."""
+    """Insert a heartbeat entry for any source (e.g. engine, gateway) with current timestamp."""
     ts = int(time.time())
     with get_connection() as conn:
         conn.execute(
