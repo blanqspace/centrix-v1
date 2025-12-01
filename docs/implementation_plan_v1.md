@@ -46,3 +46,17 @@
   - `show-gateway-status` zeigt den letzten bekannten Gateway-Zustand (Status + Zeit)
 
 ## Phase 5 – Paper-Trading (Strategien + Orders)
+## Phase 5 – Order-Modell + Execution (Paper) + Risk-Integration
+- Ziele:
+  - Einfaches Order-Modell (Paper) mit Status-Pipeline (proposed → executing → executed/failed/risk_blocked)
+  - Risk-Integration: Block bei Überschreitung von Limits, Safe-Mode setzen
+  - Minimaler IBKR-Paper-Order-Weg (technisch via IB-Client-Wrapper, keine echten Strategien/Slack)
+- Dateien:
+  - `src/centrix/order_model.py`
+  - `src/centrix/order_service.py`
+  - `src/centrix/ib_client.py`
+  - `src/centrix/main.py` (CLI-Demo `run-order-demo`)
+- Erwartete Ergebnisse:
+  - Orders werden in der DB angelegt und durchlaufen Status-Updates
+  - Risk kann Orders blocken und Safe-Mode setzen
+  - Erfolgreiche Paper-Ausführung über IB-Client-Wrapper (mit Heartbeat/Status nachvollziehbar)

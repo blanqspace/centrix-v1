@@ -44,6 +44,26 @@ def init_schema() -> None:
         status TEXT NOT NULL,
         ts INTEGER NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS orders (
+        id INTEGER PRIMARY KEY,
+        symbol TEXT NOT NULL,
+        side TEXT NOT NULL,
+        quantity REAL NOT NULL,
+        status TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL,
+        error_message TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS trades (
+        id INTEGER PRIMARY KEY,
+        order_id INTEGER NOT NULL,
+        fill_price REAL,
+        fill_qty REAL,
+        ts INTEGER NOT NULL,
+        FOREIGN KEY(order_id) REFERENCES orders(id)
+    );
     """
 
     with get_connection() as conn:

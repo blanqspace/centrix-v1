@@ -12,6 +12,7 @@ rectangle "Centrix Core" as Core {
   [Engine Loop]
   [Risk Service]
   [IB Client]
+  [Order Service]
 }
 
 Core --> Database
@@ -22,9 +23,17 @@ Engine Loop --> Risk Service
 Risk Service --> Database
 IB Client --> IBKR Gateway
 Engine Loop --> IB Client
+Engine Loop --> Order Service
+Order Service --> Risk Service
+Order Service --> IBKR Gateway
+Order Service --> Database
 
 note bottom of IB Client
 Phase 4: Connection/Status only
 no orders
+end note
+
+note bottom of Order Service
+Phase 5: Paper orders, no strategies/Slack
 end note
 @enduml

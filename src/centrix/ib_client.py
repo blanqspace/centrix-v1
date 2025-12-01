@@ -4,7 +4,7 @@ import os
 import socket
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 
 @dataclass
@@ -98,3 +98,15 @@ def disconnect_ib(client: IBClient) -> None:
 def is_ib_connected(client: IBClient) -> bool:
     """Return the cached connection status of the IB client."""
     return client.connected
+
+
+def submit_market_order(client: IBClient, symbol: str, side: str, quantity: float) -> Tuple[bool, str]:
+    """Minimal market-order wrapper for Phase 5; returns (success, error_message)."""
+    if not is_ib_connected(client):
+        return False, "IB client not connected"
+
+    try:
+        print(f"[ib_client] Pretend to submit market order {side} {quantity} {symbol}")
+        return True, ""
+    except Exception as exc:
+        return False, str(exc)

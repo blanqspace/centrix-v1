@@ -18,6 +18,13 @@ from centrix.ib_client import (
     disconnect_ib,
     is_ib_connected,
 )
+from centrix.order_model import NewOrder
+from centrix.order_service import (
+    check_risk,
+    create_order_proposal,
+    execute_order,
+    get_order,
+)
 from centrix.risk import DummyOrder, evaluate_order, load_risk_limits
 
 
@@ -78,11 +85,40 @@ def main() -> None:
         else:
             age = int(time.time() - hb["ts"])
             print(f"gateway: {hb['status']} (vor {age} Sekunden)")
+    elif cmd == "run-order-demo":
+        init_schema()
+
+        # Optional connectivity check (non-fatal)
+        client = create_ib_client()
+        if connect_ib(client):
+            write_heartbeat("gateway", "connected")
+            disconnect_ib(client)
+        else:
+            write_heartbeat("gateway", "disconnected")
+
+        demo_order = NewOrder(symbol="AAPL", side="buy", quantity=10)
+        order_id = create_order_proposal(demo_order)
+        print(f"Order angelegt: id={order_id}, symbol={demo_order.symbol}, side={demo_order.side}, qty={demo_order.quantity}")
+
+        allowed, reason = check_risk(order_id)
+        if not allowed:
+            ord_rec = get_order(order_id)
+            print(f"Order geblockt: id={order_id}, status={ord_rec.status if ord_rec else 'unknown'}, reason={reason}")
+            return
+
+        ok = execute_order(order_id)
+        final_order = get_order(order_id)
+        if final_order is None:
+            print(f"Order {order_id} nicht gefunden")
+            return
+        print(
+            f"Order fertig: id={final_order.id}, symbol={final_order.symbol}, side={final_order.side}, qty={final_order.quantity}, status={final_order.status}, error={final_order.error_message}"
+        )
     else:
         print(f"Unknown command: {cmd}")
         print(
             "Available commands: init-db, run-engine, run-risk-demo, show-safe-mode, "
-            "test-ib-connection, show-gateway-status"
+            "test-ib-connection, show-gateway-status, run-order-demo"
         )
 
 
